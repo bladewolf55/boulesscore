@@ -1,0 +1,53 @@
+parameters:
+- name: DisplayName
+- name: VariablesFilePath
+- name: Enabled
+  type: boolean
+
+jobs:
+- ${{ if eq(parameters.Enabled, true) }}:
+  # Build, test, publish
+  - job: 
+    displayName: ${{ parameters.DisplayName }}
+    variables:
+    - template: ${{ parameters.VariablesFilePath }}
+    steps:
+    # Environment
+    - pwsh: | 
+        Write-Host "VariablesFilePath        ${{ parameters.VariablesFilePath }}"
+        Write-Host "ProjectName              $(ProjectName)"
+        Write-Host "BuildCommand             $(BuildCommand)"
+        Write-Host "PackageDirectory         $(PackageDirectory)"
+        Write-Host "TestResultsDirectory     $(TestResultsDirectory)"
+        Write-Host "CoverageResultsDirectory $(CoverageResultsDirectory)"
+      displayName: 'Environment'
+    - task: UseDotNet@2
+      displayName: Use .NET 6
+      inputs:
+        packageType: 'sdk'
+        version: '6.x'
+    - task: NuGetAuthenticate@0
+      displayName: "Authenticate NuGet"
+    # Build and Test
+    - pwsh: |
+        Set-Location "$(System.DefaultWorkingDirectory)"
+        $(BuildCommand)
+      displayName: "Run build script"
+    # Publish
+    - task: PublishTestResults@2
+      displayName: Publish test results
+      condition: succeededOrFailed()
+      inputs:
+        testResultsFormat: VSTest
+        testResultsFiles: '$(TestResultsDirectory)/*.trx'
+        testRunTitle: '$(ProjectName) test results'
+        failTaskOnFailedTests: true
+    - task: PublishCodeCoverageResults@1
+      displayName: Publish code coverage results
+      inputs:
+        codeCoverageTool: 'Cobertura'
+        summaryFileLocation: '$(CoverageResultsDirectory)/*-cobertura-results.xml'
+        reportDirectory: '$(CoverageResultsDirectory)/*-html'
+    - publish: '$(PackageDirectory)'
+      artifact: package_$(ProjectName)
+      displayName: Publish

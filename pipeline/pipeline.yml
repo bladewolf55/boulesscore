@@ -1,0 +1,183 @@
+pool:
+  vmImage: 'windows-latest'
+
+trigger:
+  branches:
+    include:
+    # branches
+    - refs/heads/master
+    - refs/heads/release
+    - refs/heads/candidate/*
+    - refs/heads/hotfix/*
+    # tags
+    - refs/tags/dev-*
+    - refs/tags/test-*
+
+variables:
+# GLOBAL
+- group: Global
+# PIPELINE
+- template: 'variables-pipeline.yml'
+
+# BUILD
+
+# DEPLOYMENT
+# General
+# Develop
+- name: IsDev
+  value: $[startsWith(variables['Build.SourceBranch'], 'refs/tags/dev-')]
+# Test
+- name: IsTest
+  value: true
+  value: $[startsWith(variables['Build.SourceBranch'], 'refs/tags/test-')]
+# Release
+- name: IsCandidate
+  value: $[startsWith(variables['Build.SourceBranch'], 'refs/heads/candidate/')]
+- name: IsHotfix
+  value: $[startsWith(variables['Build.SourceBranch'], 'refs/heads/hotfix/')]
+
+stages:
+
+# ***** INIT ALWAYS *****
+- stage: init
+  displayName: "Init"
+  jobs:
+  - job:
+    steps:
+    - checkout: none 
+      # Environment
+    - pwsh: |
+        Write-Host "# ENVIRONMENT"
+        Write-Host "System.DefaultWorkingDirectory  $(System.DefaultWorkingDirectory)"
+        Write-Host "System.TeamProject              $(System.TeamProject)"
+        Write-Host "System.DefinitionId             $(System.DefinitionId)"
+        Write-Host "Build.Reason                    $(Build.Reason)"
+        Write-Host "Build.BuildId                   $(Build.BuildId)"
+        Write-Host "Build.BuildNumber               $(Build.BuildNumber)"
+        Write-Host "Build.SourceBranch              $(Build.SourceBranch)"
+        Write-Host "Build.SourceBranchName          $(Build.SourceBranchName)"
+        Write-Host "Build.SourceVersion             $(Build.SourceVersion)"
+        if ('$(Build.Reason)' -eq 'PullRequest') {
+          Write-Host "PullRequestId                   $(System.PullRequest.PullRequestId)"
+          Write-Host "PullRequestNumber               $(System.PullRequest.PullRequestNumber)"
+          Write-Host "PullRequestSourceBranch         $(System.PullRequest.SourceBranch)"
+          Write-Host "PullRequestTargetBranch         $(System.PullRequest.TargetBranch)"
+        }
+
+        Write-Host "# PIPELINE"
+        Write-Host "IsIndividualCI                  $(IsIndividualCI)"
+        Write-Host "IsBatchedCI                     $(IsBatchedCI)"
+        Write-Host "IsSchedule                      $(IsSchedule)"
+        Write-Host "IsManual                        $(IsManual)"
+        Write-Host "IsPullRequest                   $(IsPullRequest)"
+        Write-Host "IsResourceTrigger               $(IsResourceTrigger)"
+        Write-Host "IsMain                          $(IsMain)"
+
+        Write-Host "# DEPLOYMENT"
+        Write-Host "## General"
+        
+        Write-Host "## Develop"
+        Write-Host "IsDev                           $(IsDev)"
+        
+        Write-Host "## Test"
+        Write-Host "IsTest                          $(IsTest)"
+        
+        Write-Host "## Release"
+        Write-Host "IsCandidate                     $(IsCandidate)"
+        Write-Host "IsHotfix                        $(IsHotfix)"
+      displayName: "Variables"
+
+# ***** INTEGRATION BUILD AND DEPLOY*****
+
+- stage: build
+  displayName: "Build and Test"
+  dependsOn: init
+  condition: succeeded()
+  jobs:
+  - template: 'job-build-dotnet.yml'
+    parameters:
+      DisplayName: 'BoulesScore'
+      VariablesFilePath: 'variables-project.yml'
+
+# int
+- template: 'stage-deploy.yml'
+  parameters:
+    StageName      : int
+    Environment    : 'Build'
+    DependsOn      : build
+    Condition      : succeeded()
+
+# ***** DEVELOP *****
+
+# dev
+- template: 'stage-deploy.yml'
+  parameters:
+    StageName      : dev
+    Environment    : 'Development'
+    DependsOn      : int
+    Condition      : and(
+        succeeded(), 
+        or (
+          eq(variables.IsDev, 'true'),
+          eq(variables.IsManual, 'true')
+        )
+      )
+
+# ***** TEST *****
+
+# qa
+- template: 'stage-deploy.yml'
+  parameters:
+    StageName      : qa
+    Environment    : 'QA'
+    DependsOn      : int
+    Condition: and(
+        succeeded(),
+        eq(variables.IsTest, 'true')      
+      )
+
+# ***** RELEASE *****
+
+# uat
+- template: 'stage-deploy.yml'
+  parameters:
+    StageName      : uat
+    Environment    : 'UAT'
+    DependsOn      : int
+    Condition      : and(
+        succeeded(),
+        or (
+          eq(variables.IsCandidate, 'true'),
+          eq(variables.IsHotfix, 'true')
+        )
+      )
+
+# staging
+- template: 'stage-deploy.yml'
+  parameters:
+    StageName      : staging
+    Environment    : 'Staging'
+    DependsOn      : int
+    Condition      : and(
+        succeeded(),
+        or (
+          eq(variables.IsCandidate, 'true'),
+          eq(variables.IsHotfix, 'true')
+        )
+      )
+
+# prod
+- template: 'stage-deploy.yml'
+  parameters:
+    StageName      : prod
+    Environment    : 'Prod'
+    DependsOn      : 
+    - int
+    - staging
+    Condition      : and(
+        succeeded(),
+        or (
+          eq(variables.IsCandidate, 'true'),
+          eq(variables.IsHotfix, 'true')
+        )
+      )

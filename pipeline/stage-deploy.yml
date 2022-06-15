@@ -1,0 +1,22 @@
+parameters:
+- name: StageName
+- name: Environment
+- name: DependsOn
+  type: object
+- name: Condition
+  type: object
+
+stages:
+- stage: ${{ parameters.StageName }}
+  displayName: "Deploy to ${{ parameters.Environment }}"
+  dependsOn: ${{ parameters.DependsOn }}
+  condition: ${{ parameters.Condition }}
+  jobs:
+  - template: 'job-deploy-appservice.yml'
+    parameters:
+      DisplayName: 'BoulesScore'
+      Environment: ${{ parameters.Environment }}
+      VariablesFilePath: 'project-variables.yml'
+      AzureSubscriptionName: $(SubscriptionConnectedServiceName)
+      JobName: boulesscore
+      Enabled: true

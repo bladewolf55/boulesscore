@@ -1,0 +1,27 @@
+variables:
+- name: IsIndividualCI
+  value: $[eq(variables['Build.Reason'], 'IndividualCI')]
+- name: IsBatchedCI
+  value: $[eq(variables['Build.Reason'], 'BatchedCI')]
+- name: IsSchedule
+  value: $[eq(variables['Build.Reason'], 'Schedule')]
+- name: IsManual
+  value: $[eq(variables['Build.Reason'], 'Manual')]
+- name: IsPullRequest
+  value: $[eq(variables['Build.Reason'], 'PullRequest')]
+- name: IsResourceTrigger
+  value: $[eq(variables['Build.Reason'], 'ResourceTrigger')]
+- name: IsMain
+  value: $[eq(variables['Build.SourceBranch'], 'refs/heads/master')]
+
+# PACKAGE
+- name: PackageRootDirectory
+  value: '$(System.DefaultWorkingDirectory)/package'
+- name: PackageDirectory
+  value: '$(PackageRootDirectory)/$(ProjectName)'
+- name: SqlMigrationsDirectory
+  value: '$(PackageDirectory)/SQL'
+- name: TestResultsDirectory
+  value: '$(PackageRootDirectory)/testresults'
+- name: CoverageResultsDirectory
+  value:   '$(PackageRootDirectory)/coverageresults'

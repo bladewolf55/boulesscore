@@ -1,0 +1,53 @@
+parameters:
+- name: DisplayName
+- name: Environment
+- name: JobName
+  default: ''
+- name: DependsOn
+  type: object
+  default: []
+- name: VariablesFilePath
+- name: AzureSubscriptionName
+- name: Enabled
+  type: boolean
+
+jobs:
+- ${{ if eq(parameters.Enabled, true) }}:
+  - deployment: ${{ parameters.JobName }}
+    displayName: ${{ parameters.DisplayName }}
+    dependsOn: ${{ parameters.DependsOn }}
+    environment: ${{ parameters.Environment }}
+    variables:
+    - group: ${{ parameters.Environment }}
+    - template: ${{ parameters.VariablesFilePath }}
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - download: current
+            artifact: package_$(ProjectName)
+            displayName: Download artifacts
+          # Environment
+          - pwsh: |
+              Write-Host "Environment             ${{ parameters.Environment }}"
+              Write-Host "VariablesFilePath       ${{ parameters.VariablesFilePath }}"
+              Write-Host "AzureSubscriptionName   ${{ parameters.AzureSubscriptionName }}"
+              Write-Host "ArtifactDirectory       $(ArtifactDirectory)"
+              Write-Host "AppServiceName          $(AppServiceName)"
+              Write-Host "ProjectName             $(ProjectName)"
+            displayName: "Environment"
+
+          # Deploy
+          - task: AzureRmWebAppDeployment@4
+            displayName: 'Deploy to App Service'
+            inputs:
+              ConnectionType: 'AzureRM'
+              ConnectedServiceName: '${{ parameters.AzureSubscriptionName }}'
+              WebAppKind: 'webApp'
+              WebAppName: '$(AppServiceName)'
+              # Must be the zip file, legacy deployment method
+              Package: '$(ArtifactDirectory)/$(ProjectName).zip'
+              UseWebDeploy: true
+              RemoveAdditionalFilesFlag: true
+              DeploymentType: webDeploy
+

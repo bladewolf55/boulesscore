@@ -1,0 +1,80 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodels="clr-namespace:BoulesScore.ViewModels"
+             x:Class="BoulesScore.MainPage"
+             x:DataType="viewmodels:MainPage"
+             Title="{Binding Title}">
+
+    <ScrollView>
+        <VerticalStackLayout             
+            Padding="0,0" >
+            <HorizontalStackLayout 
+                HorizontalOptions="Center"
+                Margin="0,20,0,50">
+                <VerticalStackLayout Margin="0,0,50,0">
+                    <Label 
+                    Text="Left Team"
+                    FontSize="25"
+                    Margin="0,0,0,20"/>
+                    <Button 
+                    Text="+"
+                    Style="{StaticResource ButtonPlus}"
+                    Command="{Binding UpdateCounterLeftCommand}"
+                    CommandParameter="1"
+                    IsEnabled="{Binding IsNotMaxLeft}"
+                    FontSize="25"/>
+                    <Label
+                    Text="{Binding CounterLeft}"
+                    FontSize="50"
+                    Margin="10"
+                    HorizontalTextAlignment="Center"
+                    />
+                    <Button 
+                    Text="-"
+                    Style="{StaticResource ButtonMinus}"
+                    Command="{Binding UpdateCounterLeftCommand}"
+                    CommandParameter="-1"
+                    IsEnabled="{Binding IsNotMinLeft}"
+                    FontSize="25"/>
+                </VerticalStackLayout>
+                <!---->
+                <VerticalStackLayout>
+                    <Label 
+                    Text="Right Team"
+                    FontSize="25" 
+                    Margin="0,0,0,20"/>
+                    <Button 
+                    Text="+"
+                    Style="{StaticResource ButtonPlus}"
+                    Command="{Binding UpdateCounterRightCommand}"
+                    CommandParameter="1"
+                    IsEnabled="{Binding IsNotMaxRight}"
+                    FontSize="25"/>
+                    <Label
+                    Text="{Binding CounterRight}"
+                    FontSize="50"
+                    Margin="10"
+                    HorizontalTextAlignment="Center"
+                    />
+                    <Button 
+                    Text="-"
+                    Style="{StaticResource ButtonMinus}"
+                    Command="{Binding UpdateCounterRightCommand}"
+                    CommandParameter="-1"
+                    IsEnabled="{Binding IsNotMinRight}"
+                    FontSize="25"/>
+                </VerticalStackLayout>
+
+            </HorizontalStackLayout>
+            <Button 
+                Text="Reset"
+                SemanticProperties.Hint="Reset"
+                Command="{Binding ResetCountersCommand}"
+                HorizontalOptions="Center"
+                FontSize="25"/>
+
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>

@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="500"
+   height="500"
+   viewBox="0 0 132.29167 132.29167"
+   version="1.1"
+   id="svg5"
+   inkscape:version="1.2 (dc2aedaf03, 2022-05-15)"
+   sodipodi:docname="splash.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs18755">
+    <linearGradient
+       inkscape:collect="always"
+       id="linearGradient29223">
+      <stop
+         style="stop-color:#909090;stop-opacity:0;"
+         offset="0"
+         id="stop29221" />
+      <stop
+         style="stop-color:#909090;stop-opacity:1;"
+         offset="1"
+         id="stop29219" />
+    </linearGradient>
+    <radialGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient29223"
+       id="radialGradient29225"
+       cx="407.39258"
+       cy="196.69237"
+       fx="407.39258"
+       fy="196.69237"
+       r="1.9255357"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(4.7063036,0,0,4.7063036,-1476.9962,-715.04205)" />
+  </defs>
+  <sodipodi:namedview
+     id="namedview18753"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="in"
+     showgrid="false"
+     inkscape:zoom="0.63605849"
+     inkscape:cx="58.170751"
+     inkscape:cy="265.69884"
+     inkscape:window-width="1920"
+     inkscape:window-height="1009"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1" />
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-396.80334,-186.74339)">
+    <circle
+       style="fill:url(#radialGradient29225);fill-opacity:1;stroke-width:0.363469"
+       id="circle7839-5"
+       cx="437.80786"
+       cy="214.11264"
+       r="9.0621557" />
+    <path
+       style="fill:none;stroke:#ffffff;stroke-width:0.545206;stroke-linecap:butt;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1"
+       d="m 429.66511,218.39744 c 0,0 4.07608,-2.73478 6.37242,-3.74984 4.84867,-2.1432 10.45492,-1.52766 11.02909,-1.14485"
+       id="path7841-5"
+       sodipodi:nodetypes="csc" />
+    <path
+       style="fill:none;stroke:#ffffff;stroke-width:0.545206;stroke-linecap:butt;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1"
+       d="m 428.69372,212.55706 c 0,0 2.28426,-2.92167 4.54173,-4.02045 3.86364,-1.88064 10.97985,-1.06278 10.97985,-1.06278"
+       id="path7843-0"
+       sodipodi:nodetypes="csc" />
+    <path
+       style="fill:none;stroke:#ffffff;stroke-width:0.545206;stroke-linecap:butt;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1"
+       d="m 432.92088,206.37632 c 0,0 3.86416,2.76895 4.30387,6.00181 0.69404,5.10253 -3.82825,9.8381 -3.82825,9.8381"
+       id="path7845-1"
+       sodipodi:nodetypes="csc" />
+    <path
+       style="fill:none;stroke:#ffffff;stroke-width:0.545206;stroke-linecap:butt;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1"
+       d="m 440.75334,205.27886 c 0,0 3.70674,3.15209 4.05764,6.39586 0.69404,6.41583 -2.1209,10.52758 -2.1209,10.52758"
+       id="path7847-6"
+       sodipodi:nodetypes="csc" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:41.6603px;line-height:1.25;font-family:'Century Gothic';-inkscape-font-specification:'Century Gothic';fill:#9e0000;fill-opacity:1;stroke-width:0.976412"
+       x="399.97589"
+       y="224.94548"
+       id="text28757"><tspan
+         sodipodi:role="line"
+         x="399.97589"
+         y="224.94548"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:'Century Gothic';-inkscape-font-specification:'Century Gothic';fill:#9e0000;fill-opacity:1;stroke-width:0.976412"
+         id="tspan28759">Boules</tspan><tspan
+         sodipodi:role="line"
+         x="399.97589"
+         y="277.02087"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:'Century Gothic';-inkscape-font-specification:'Century Gothic';fill:#9e0000;fill-opacity:1;stroke-width:0.976412"
+         id="tspan28763">Score</tspan></text>
+  </g>
+  <inkscape:templateinfo>
+    <inkscape:name>US Default</inkscape:name>
+    <inkscape:author>Charles L Flatt</inkscape:author>
+    <inkscape:shortdesc>Default US units</inkscape:shortdesc>
+    <inkscape:date>2022-04-02</inkscape:date>
+  </inkscape:templateinfo>
+</svg>

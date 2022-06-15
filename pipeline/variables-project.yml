@@ -1,0 +1,9 @@
+variables:
+- name: ProjectName
+  value: 'BoulesScore'
+- name: ArtifactDirectory
+  value: '$(Pipeline.Workspace)/package_$(ProjectName)'
+- name: AppServiceName
+  value: '$(BoulesScore:AppServiceName)'
+- name: BuildCommand
+  value: './build.ps1 -CI'
