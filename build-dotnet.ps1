@@ -62,7 +62,7 @@ try {
     }
 
     Write-Message "## BUILD"
-    Run { dotnet build $ProjectDirectory -c Release -t:Rebuild -p:WarningLevel=1 -warnAsMessage:"CS1591" }
+    Run { dotnet build $ProjectDirectory -c Release -t:Rebuild -p:WarningLevel=1 -warnAsMessage:"CS1591" -t:InstallAndroidDependencies -f net9.0-android  -p:AndroidSdkDirectory=c:\work\android-sdk -p:JavaSdkDirectory=c:\work\jdk}
 
     if (-Not($NoTest) -and $TestProjectName -ne '') {
         Write-Message "## TEST"
@@ -71,8 +71,8 @@ try {
     }
 
     Write-Message "# PUBLISH"
-    Run { dotnet publish $ProjectDirectory -c Release --output $PackageDirectoryWindows --framework net6.0-windows10.0.19041.0}
-    Run { dotnet publish $ProjectDirectory -c Release --output $PackageDirectoryAndroid --framework net6.0-android}
+    Run { dotnet publish $ProjectDirectory -c Release --output $PackageDirectoryWindows --framework net9.0-windows10.0.19041.0 }
+    Run { dotnet publish $ProjectDirectory -c Release --output $PackageDirectoryAndroid --framework net9.0-android -p:AndroidSdkDirectory=c:\work\android-sdk -p:JavaSdkDirectory=c:\work\jdk}
     # Run { dotnet publish $ProjectDirectory -c Release --output $PackageDirectoryIos     --framework net6.0-ios}
     # Run { dotnet publish $ProjectDirectory -c Release --output $PackageDirectoryMac     --framework net6.0-maccatalyst}
 }
